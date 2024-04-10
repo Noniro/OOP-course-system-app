@@ -18,9 +18,12 @@ public class Teacher {
     public void createCourse(String type, String coursename, int capacity) {
         courseManager.createCourse(type, coursename, capacity);
     }
-
-
-
+    public void registerUser(String courseName, String userID) {
+        courseManager.registerUser(courseName, userID);
+    }
+    public void unregisterUser(String courseName, String userID) {
+        courseManager.unregisterUser(courseName, userID);
+    }
 
 }
 

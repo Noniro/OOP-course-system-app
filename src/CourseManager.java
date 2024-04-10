@@ -25,8 +25,10 @@ public class CourseManager {
             Course course = courses.get(courseName);
             Users user = new Student(null, userID); // Create a new user with the same ID
             if (course.addUser(user)) {
+                course.removeObserver(user);
                 System.out.println("User with ID " + userID + " registered in course " + courseName);
             } else {
+                course.registerObserver(user);
                 System.out.println("User with ID " + userID + " added to waitlist for course " + courseName);
             }
         } else {
@@ -43,6 +45,7 @@ public class CourseManager {
             if (course.getUsers().contains(userToRemove)) {
                 course.removeFromCourse(userId);
                 System.out.println("User with ID " + userId + " unregistered from course " + courseName);
+                course.notifyObservers();
             } else {
                 System.out.println("User with ID " + userId + " is not registered in course " + courseName);
             }

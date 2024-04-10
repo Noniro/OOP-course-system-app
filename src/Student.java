@@ -23,12 +23,12 @@ public class Student implements Users{
         Student student = (Student) o;
         return ID.equals(student.ID);
     }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(ID);
+    public void registerCourse(CourseManager courseManager, String courseName) {
+        courseManager.registerUser(courseName, ID);
     }
-
+    public void unregisterCourse(CourseManager courseManager, String courseName) {
+        courseManager.unregisterUser(courseName, ID);
+    }
     @Override
     public void update(String notification) {
 

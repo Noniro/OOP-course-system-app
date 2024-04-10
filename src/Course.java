@@ -1,20 +1,19 @@
 import java.util.*;
 
 public abstract class Course implements Subject{
-    private final HashSet<Object> Users;
+    private final HashSet<Users> Users;
     private String name;
     private int capacity;
-    private Set<Users> students;
-    private List<Users> observers;
-    private List<Users> waitlist;
+    private List<Users> waitlistObservers;
 
     public Course(String name, int capacity) {
         this.name = name;
         this.capacity = capacity;
         this.Users = new HashSet<>();
-        this.observers = new ArrayList<>();
-        this.waitlist = new ArrayList<>();
+
+        this.waitlistObservers = new ArrayList<>();
     }
+
 
 
     public static Course createCourse(String type, String name, int capacity) {
@@ -31,6 +30,22 @@ public abstract class Course implements Subject{
     }
 
 
+    @Override
+    public void registerObserver(Users observer) {
+        waitlistObservers.add(observer);
+    }
+
+    @Override
+    public void removeObserver(Users observer) {
+        waitlistObservers.remove(observer);
+    }
+
+    @Override
+    public void notifyObservers() {
+        for (Users observer : waitlistObservers) {
+            observer.update(name);
+        }
+    }
 
 
     public String getName() {
@@ -50,44 +65,23 @@ public abstract class Course implements Subject{
             Users.add(user);
             return true;
         } else {
-            waitlist.add(user);
+            waitlistObservers.add(user);
             return false;
         }
-    }
-
-
-    @Override
-    public void registerObserver(Users observer) {
-        observers.add(observer);
-
-    }
-
-    @Override
-    public void removeObserver(Users observer) {
-        observers.remove(observer);
-
-    }
-
-    @Override
-    public void notifyObservers() {
-        for (Users observer : observers) {
-            observer.update(name);
-        }
-
     }
 
     public void removeFromCourse(String userID) {
         Users user2remove = new Student(null,userID);
         if (Users.remove(user2remove)) {
-            students.remove(user2remove);
+            Users.remove(user2remove);
             System.out.println(user2remove.getUserName() + " unregistered from course " + name);
         }
-        for (Users u : waitlist) {
+        for (Users u : waitlistObservers) {
             u.update(name + " New spot available in " + this.name + " course");
         }
     }
 
-    public Collection<Object> getUsers() {
+    public HashSet<Users> getUsers() {
         return Users;
     }
 }
